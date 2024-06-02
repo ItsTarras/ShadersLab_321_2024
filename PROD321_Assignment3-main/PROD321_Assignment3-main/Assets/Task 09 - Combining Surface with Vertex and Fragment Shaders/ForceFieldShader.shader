@@ -15,6 +15,8 @@ Shader "Assignment3/Task9/ForceFieldShader"
         /*******
         * TODO: Add the Texture for our mesh here (1/10)
         *******/
+         _MainTexture ("Main Texture", 2D) = "white" {}
+
 
         // The amount to inflate the mesh along it's normals
         _InflationFactor ("Inflation Factor", Range(-.1, .5)) = 0.1
@@ -22,6 +24,9 @@ Shader "Assignment3/Task9/ForceFieldShader"
         /*******
          * TODO: Add the colour of the force field here (8/10)
          *******/
+         _ForceColour ("Force Field Colour", Color) = (1, 1, 1, 1)
+
+         _AlphaValue ("Alpha Value", Range(0, 1)) = 0.5
     }
 
     // Our Shader Program
@@ -45,13 +50,14 @@ Shader "Assignment3/Task9/ForceFieldShader"
              * if our texture is called _MainTex, it should be uv_MainTex
              * or if our texture is called myTex, it should be uvmyTex (3/10)
              *******/
-             float2 uv;
+             float2 uv_MainTexture;
         };
 
         /*******
          * TODO: Add the sampler2D for our main texture (2/10)
          *******/
-
+         sampler2D _MainTexture;
+         
         // The definition of our Surface Output structure for reference
         /*
         struct SurfaceOutput
@@ -73,6 +79,7 @@ Shader "Assignment3/Task9/ForceFieldShader"
              * TODO: Set surface output Albedo (Diffuse) colour by extracting
              * colour from texture using the tex2D function (4/10)
              *******/
+             o.Albedo = tex2D(_MainTexture, IN.uv_MainTexture).rgb;
         }
         ENDCG
 
@@ -83,10 +90,12 @@ Shader "Assignment3/Task9/ForceFieldShader"
             /*******
              * TODO: Turn on ZWriting (5/10)
              *******/
+             ZWrite On
 
             /*******
              * TODO: Write nothing to the frame buffer using ColorMask (6/10)
              *******/
+             ColorMask 0
 
             CGPROGRAM
             // Define a vertex shader in the vert function
@@ -110,6 +119,7 @@ Shader "Assignment3/Task9/ForceFieldShader"
             // The uniform variable for our inflation factor
             float _InflationFactor;
 
+            
             // The vertex function, takes a variable of type appdata named
             // v and returns a float4 semantically tagged with SV_POSITION for
             // the homogeneous clip space vertex position
@@ -140,6 +150,7 @@ Shader "Assignment3/Task9/ForceFieldShader"
             /*******
              * TODO: Define Blend Function (7/10)
              *******/
+             Blend SrcAlpha OneMinusSrcAlpha
 
             CGPROGRAM
             // Define a vertex shader in the vert function
@@ -166,6 +177,10 @@ Shader "Assignment3/Task9/ForceFieldShader"
             /*******
              * TODO: Add the uniform variable for our force field colour (9/10)
              *******/
+             fixed4 _ForceColour;
+
+             float _AlphaValue;
+
 
             // The vertex function, takes a variable of type appdata named
             // v and returns a float4 semantically tagged with SV_POSITION for
@@ -186,7 +201,8 @@ Shader "Assignment3/Task9/ForceFieldShader"
                 /*******
                  * TODO: Return the force field colour (10/10)
                  *******/
-                 return (0,0,0,0);
+
+                 return (_ForceColour * _AlphaValue);
             }
             ENDCG
         }

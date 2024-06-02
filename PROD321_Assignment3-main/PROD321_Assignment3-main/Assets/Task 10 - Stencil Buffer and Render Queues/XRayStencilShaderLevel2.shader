@@ -20,19 +20,24 @@ Shader "Assignment3/Task10/XRayStencilShaderLevel2"
          * than our XRay Stencil Test Objects, using the
          * Tags { "Queue" = "..." } function
          *******/
+         Tags {"Queue" = "Geometry-1"}
+
 
         Stencil
         {
             /*******
              * TODO: Sub Task 1 Set the ref value to 2
              *******/
+             Ref 2
             /*******
              * TODO: Sub Task 1 The comparison function should always pass
              *******/
+             Comp Always
             /*******
              * TODO: Sub Task 1 If the fragment passes, it should replace what
              * is in the stencil buffer
              *******/
+             Pass Replace
 
         }
 

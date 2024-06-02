@@ -23,6 +23,8 @@ Shader "Assignment3/Task8/AlphaColourVertexFragmentShader"
             /*******
              * TODO: Define Blend Function
              *******/
+            Blend SrcAlpha OneMinusSrcAlpha
+
 
             CGPROGRAM
             // Define a vertex shader in the vert function

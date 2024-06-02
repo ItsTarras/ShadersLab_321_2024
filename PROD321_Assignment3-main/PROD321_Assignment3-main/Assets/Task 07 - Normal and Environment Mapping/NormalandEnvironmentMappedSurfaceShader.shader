@@ -24,6 +24,7 @@ Shader "Assignment3/Task7/NormalandEnvironmentMappedSurfaceShader"
         /*******
          * TODO: Sub Task 1 Add the normal texture of the surface here (1/6)
          *******/
+         _NormalTex ("Normal Texture", 2D) = "bump" {}
 
         // The magnitude of the normal mapping of the surface
         _NormalMagnitude ("Normal Magnitude", Range(0, 50)) = 1
@@ -31,6 +32,7 @@ Shader "Assignment3/Task7/NormalandEnvironmentMappedSurfaceShader"
         /*******
          * TODO: Sub Task 2 Add a cube map for environment mapping here (1/3)
          *******/
+         _Cube ("Cube map", CUBE) = "" {}
     }
 
    // Our Shader Program
@@ -50,6 +52,8 @@ Shader "Assignment3/Task7/NormalandEnvironmentMappedSurfaceShader"
             /*******
              * TODO: Sub Task 1 Add the UV coordinates for our normal texture here (3/6)
              *******/
+             float2 uv_NormalTex;
+             
 
             // The world reflection vector for environment mapping
             /*******
@@ -57,7 +61,7 @@ Shader "Assignment3/Task7/NormalandEnvironmentMappedSurfaceShader"
              * we need to add INTERNAL_DATA to our world reflection vector
              * after the ; (4/6)
              *******/
-            float3 worldRefl; // - contains world reflection vector
+            float3 worldRefl; INTERNAL_DATA // - contains world reflection vector
         };
 
         // The sampler2D for our main texture
@@ -66,6 +70,7 @@ Shader "Assignment3/Task7/NormalandEnvironmentMappedSurfaceShader"
         /*******
          * TODO: Sub Task 1 Add the sampler2D for our normal texture (2/6)
          *******/
+        sampler2D _NormalTex;
 
         // The float for our normal magnitude multiplier
         float _NormalMagnitude;
@@ -73,6 +78,7 @@ Shader "Assignment3/Task7/NormalandEnvironmentMappedSurfaceShader"
         /*******
          * TODO: Sub Task 2 Add the samplerCUBE for our environment map texture (2/3)
          *******/
+         samplerCUBE _Cube;
 
         // The Metallic value for our surface
         float _Metallic;
@@ -106,18 +112,19 @@ Shader "Assignment3/Task7/NormalandEnvironmentMappedSurfaceShader"
             /*******
              * TODO: Sub Task 1 Unpack our normal vector from the normal texture (5/6)
              *******/
+            float3 unpackedNormal = UnpackNormal(tex2D(_NormalTex, IN.uv_NormalTex));
             
             /*******
              * TODO: Sub Task 1 Multiply our normal by the normal magnitude vector
              * Just uncomment this value when you have added your normal map (6/6)
              *******/
-            // o.Normal *= float3(_NormalMagnitude, _NormalMagnitude, 1);
+            unpackedNormal *= float3(_NormalMagnitude, _NormalMagnitude, 1); // Changed this to use the unpacked normal, because it wasn't being used at all beforehand.
 
             /*******
              * TODO: Sub Task 1 Normalize the normal (6/6)
              * Just uncomment this value when you have added your normal map
              *******/
-            //o.Normal = normalize(o.Normal);
+            o.Normal = normalize(unpackedNormal); // Normalizing was WRONGK
 
             // Set the surface's metallic value
             o.Metallic = _Metallic;
@@ -137,7 +144,8 @@ Shader "Assignment3/Task7/NormalandEnvironmentMappedSurfaceShader"
              * TODO: Sub Task 2 Change from using the Unity Skybox to the environment map we have defined
              * You will need to use the texCUBE function instead of UNITY_SAMPLE_TEXCUBE (3/3)
              *******/
-            o.Emission = UNITY_SAMPLE_TEXCUBE(unity_SpecCube0, reflectionVector).rgb  * .5;
+            o.Emission = texCUBE(_Cube, reflectionVector).rgb  * .5;
+
 
         }
         ENDCG

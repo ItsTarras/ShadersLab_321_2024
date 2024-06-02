@@ -9,6 +9,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Inflation Material
   m_Shader: {fileID: 4800000, guid: 7b4ea1b864064417f801e1d3dc9ad347, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -17,6 +19,7 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -28,9 +31,13 @@ Material:
         m_Texture: {fileID: 2800000, guid: 8a5f2d51be2cf463da0d46330bbebaf4, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _MainTexture:
+        m_Texture: {fileID: 2800000, guid: f6af06faacca14ee58e864a00d7d4cbd, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
     - _ExpansionFactor: 0.2
-    - _InflationFactor: -0.058
+    - _InflationFactor: 0.205
     m_Colors: []
   m_BuildTextureStacks: []

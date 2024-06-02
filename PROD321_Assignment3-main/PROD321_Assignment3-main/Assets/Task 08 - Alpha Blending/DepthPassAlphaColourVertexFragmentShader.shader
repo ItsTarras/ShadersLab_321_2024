@@ -25,10 +25,12 @@ Shader "Assignment3/Task8/DepthPassAlphaColourVertexFragmentShader"
             /*******
              * TODO: Turn on ZWriting
              *******/
+             ZWrite On
             /*******
              * TODO: Disable writing to the frame buffer
              * using ColorMask 0
              *******/
+             ColorMask 0
         }
 
         Pass
@@ -36,6 +38,7 @@ Shader "Assignment3/Task8/DepthPassAlphaColourVertexFragmentShader"
             /*******
              * TODO: Define Blend Function
              *******/
+             Blend SrcAlpha OneMinusSrcAlpha
 
             CGPROGRAM
             // Define a vertex shader in the vert function

@@ -14,6 +14,8 @@ Shader "Assignment3/Task8/DepthPassAlphaColourSurfaceShader"
     {
         // The diffuse colour of our surface
         _Color ("Color", Color) = (1,1,1,.5)
+
+        _AlphaVal ("Alpha Value", Range(0, 1)) = 0.5
     }
 
     // Our Shader Program
@@ -25,19 +27,23 @@ Shader "Assignment3/Task8/DepthPassAlphaColourSurfaceShader"
             /*******
              * TODO: Turn on ZWriting
              *******/
+             ZWrite On
             /*******
              * TODO: Disable writing to the frame buffer
              * using ColorMask 0
              *******/
+             ColorMask 0
             
         }
+
+        
 
         CGPROGRAM
         // Define a surface shader in the surf function
         /*******
          * TODO: Add alpha transparency support
          *******/
-        #pragma surface surf Lambert
+        #pragma surface surf Lambert alpha
 
         // The input structure to our surface function, can't be
         // empty so we'll just define a UV set
@@ -48,6 +54,8 @@ Shader "Assignment3/Task8/DepthPassAlphaColourSurfaceShader"
 
         // The uniform variable for our diffuse colour property
         fixed4 _Color;
+        float _AlphaVal;
+
 
         // The definition of our Surface Output structure for reference
         /*
@@ -74,6 +82,7 @@ Shader "Assignment3/Task8/DepthPassAlphaColourSurfaceShader"
             /*******
              * TODO: Set the Alpha value for the surface
              *******/
+             o.Alpha = _AlphaVal;
         }
         ENDCG
     }

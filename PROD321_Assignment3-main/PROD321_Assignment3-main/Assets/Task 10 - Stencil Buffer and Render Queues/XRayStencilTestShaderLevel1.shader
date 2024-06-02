@@ -23,17 +23,21 @@ Shader "Assignment3/Task10/XRayStencilTestShaderLevel1"
          * than our XRay Stencil Shader Objects, using the
          * Tags { "Queue" = "..." } function
          *******/
+         Tags {"Queue" = "Geometry+1"}
 
         Stencil
         {
             /*******
              * TODO: Sub Task 1 Set the ref value to 1
              *******/
+             Ref 1
             /*******
              * TODO: Sub Task 1 The comparison function should only pass if
              * the value of Ref is greater than what is currently
              * in the stencil buffer
              *******/
+             Comp Greater
+
         }
 
         CGPROGRAM

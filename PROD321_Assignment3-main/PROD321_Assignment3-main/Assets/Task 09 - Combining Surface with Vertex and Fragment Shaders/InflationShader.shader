@@ -16,6 +16,8 @@ Shader "Assignment3/Task9/InflationShader"
         /*******
          * TODO: Add the Texture for our mesh here
          *******/
+         
+         _MainTexture ("Main Texture", 2D) = "white" {}
 
         // The amount to inflate the mesh along it's normals
         _InflationFactor ("Inflation Factor", Range(-.1, .5)) = 0.1
@@ -33,7 +35,7 @@ Shader "Assignment3/Task9/InflationShader"
         /*******
          * TODO: Reference our vertex shader using the format vertex:shaderfunctionname
          *******/
-        #pragma surface surf Lambert
+        #pragma surface surf Lambert vertex:vert
 
         // The input structure to our surface function
         struct Input
@@ -45,12 +47,13 @@ Shader "Assignment3/Task9/InflationShader"
              * if our texture is called _MainTex, it should be uv_MainTex
              * or if our texture is called myTex, it should be uvmyTex
              *******/
-            float2 uv;
+            float2 uv_MainTexture;
         };
 
         /*******
          * TODO: Add the sampler2D for our main texture
          *******/
+         sampler2D _MainTexture;
 
         // The uniform variable for our inflation factor
         float _InflationFactor;
@@ -86,6 +89,7 @@ Shader "Assignment3/Task9/InflationShader"
             // so just add a 1 to the end of the float 3 we get from multiplying by
             // the float3 normal)
             v.vertex = float4(v.vertex + v.normal * _InflationFactor, 1);
+
         }
 
         // The surface shader, takes a variable of type Input named IN
@@ -96,6 +100,7 @@ Shader "Assignment3/Task9/InflationShader"
              * TODO: Set surface output Albedo (Diffuse) colour by extracting
              * colour from texture using the tex2D function
              *******/
+             o.Albedo = tex2D(_MainTexture, IN.uv_MainTexture).rgb;
         }
         ENDCG
     }
